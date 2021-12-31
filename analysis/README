@@ -1,0 +1,29 @@
+*The contents in this folder are meant to go from the output enrichment files (one file per folder) to analytics about the distance of the GO annotations for a given protein from eachother. This should give an idea about what sort of functional information and functional clusters are being discovered for a given protein. It may be neccessary to change some path names to run this pipeline yourself. 
+
+*We start by running the enrichmentToGOGOInput.py file in parallel on all the files in our folder for enrichment files. This script takes a file, modifies its name slightly and puts the output in the folder specified. We now have files formatted for input into the GOGO algorithm, which will give us the distance between each pair of GO annotations assigned to a given protein. 
+
+rough example: 
+ls enrichmentFolder/* | parallel python3 enrichmentToGOGOInput.py {} myOutputFolder 
+
+
+*Next, we want to send these input files into a perl script that runs the GOGO algorithm. You may need to recompile GOGO on your machine. If you go into their README in the GOGO folder everything is laid out about set up and usage pretty clearly. 
+
+rough example: 
+ls GOGOInputs001/* | GOGO/perl go_comb.pl GOGOInputs001/{} GOGOOutputs001/{}outputFile.txt 
+
+*Now, we need to create use these output files in GOGOOutputs001 to visualize the similarity between annotations for a given protein. Say we are interested in the HIV envelope protein, we can run something similar to the following. 
+
+python3 GOGOOutputToDendrogram_Descriptions.py GOGOOutputs001/envelopeMC30GOGOInputOutput.txt GOGOOutputs001/envelopeB62GOGOInputOutput.txt
+
+*this gives us a nice dendrogram showing functional groupings. You can play with how we define distance (right now it is 1 - GOGO similarity) and the linkage used for the hierarchical clustering algorithm. 
+
+*we can also do clustering using the Affinity Propogation algorithm. This creates a similarity matrix using code similar to that used for the dendrograms. We then use scikitlearn to apply affinity propogation. This code may need slight modification when used with other matrix names. For example, it takes one argument and then finds the BLOSUM62 output file by just replacing MC30 with B62, which isn't practical for many casees. 
+
+python3 GOGOOutputToAPClusters.py GOGOOutputs001/envelopeMC30GOGOInputOutput.txt 
+
+*finally, to plot the distance between each new annotation and its closest annotation found using BLOSUM62, we can run the following file. The two arguments into the file are a folder containing the BLOSUM62 annotations and a file containing the Protsub annotations.  
+
+enrichmentFolderplotClosestGOsDists.py B62enriched001 MC30enriched001
+
+
+
