@@ -1,4 +1,4 @@
-All of the scripts and files needed to blast HIV proteins and get their enrichment scores are present in this folder. The scripts and files to analyze the enriched annotations are in the folder "analysis". Path names may need to be changed to make the pipeline runnable; however, nothing else has been modified about the pipeline that would make it not runnable.  
+All of the scripts and files needed to blast HIV proteins and get their enrichment scores are present in this folder, with the exception of certain folders and files too large to upload (noted below). The scripts and files to analyze the enriched annotations are in the folder "analysis". Path names may need to be changed to make the pipeline runnable; however, nothing else has been modified about the pipeline that would make it not runnable.  
 
 HIVProteinsFirstHalf: The first half of the HIV proteins. Proteins were split in this way so that two BLAST scripts could be run at once.
 
@@ -10,9 +10,9 @@ blastB62_firstHalf.sh: Same but for BLOSUM62 matrix.
 blastMC30_secondHalf.sh: BLASTs second half with Protsub matrix and stores output in rawOutput. 
 blastB62_firstHalf.sh: Same but for BLOSUM62 matrix. 
 
-swissprot folder: This folder is the database used when BLASTing and was made using the fasta file swissprot.fasta along with the makeblastdb tool.  
+swissprot folder: This folder is in a seperate location due to its size. The database used when BLASTing and was made using the fasta file swissprot.fasta (also stored seperately due to size) along with the makeblastdb tool.  
 
-swissprot_ID_GOs.tab: This tsv file contains the GO annotations in swissprot for each protein. It is used as input to the uniIdsToGOsSwissprot.py file.   
+swissprot_ID_GOs.tab: This file is in a seperate location due to its size. This tsv file contains the GO annotations in swissprot for each protein. It is used as input to the uniIdsToGOsSwissprot.py file.   
 
 makeEvalCut.py: Takes the raw blast output and only keeps hits under the specified evalue. 
 
